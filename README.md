@@ -63,10 +63,13 @@ Environment files needed:
 
 ## Run Tests
 
-```
-cd backend
-pytest
-```
+Activate the virtual environment first:
+
+    source .venv/bin/activate
+
+Then run:
+
+    pytest
 
 ## Architecture
 
