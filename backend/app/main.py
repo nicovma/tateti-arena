@@ -2,13 +2,14 @@ import socketio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.models import models  # noqa: F401
-from app.api import auth
+from app.api import auth, profile
 
 from app.core.database import engine, Base
 
 fastapi_app = FastAPI(title="Ta-Te-Ti Arena")
 
 fastapi_app.include_router(auth.router)
+fastapi_app.include_router(profile.router)
 
 fastapi_app.add_middleware(
     CORSMiddleware,
