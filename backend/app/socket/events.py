@@ -14,7 +14,7 @@ import app.services.game_service as game_svc
 
 
 @sio.event
-async def connect(sid, environ, auth):
+async def connect(sid, _environ, auth):
     token = (auth or {}).get("token")
     if not token:
         raise ConnectionRefusedError("Authentication required")
@@ -121,3 +121,57 @@ async def make_move(sid, data):
 
     await sio.emit("game_over", {"winner_id": str(winner_id) if winner_id else None, "board": board_str}, room=game_id)
     del active_games[game_id]
+
+# Chat handler
+
+@sio.event
+async def send_message(sid, data):
+    game_id = data.get("game_id")
+    text = data.get("text", "").strip()
+
+    if not text or game_id not in active_games:
+        return
+
+    game = active_games[game_id]
+    player = game.get_player_by_sid(sid)
+    if player is None:
+        return
+
+    await sio.emit(
+        "chat_message",
+        {"sender": player.name, "text": text},
+        room=game_id,
+    )
+
+#Reconnection handler
+
+@sio.event
+async def rejoin_game(sid, data):
+    game_id = data.get("game_id")
+    session = await sio.get_session(sid)
+    user_id = session["user_id"]
+
+    game = active_games.get(game_id)
+    if game is None:
+        await sio.emit("game_not_found", {}, to=sid)
+        return
+
+    player = game.get_player_by_user_id(user_id)
+    if player is None:
+        return
+
+    player.sid = sid
+    await sio.enter_room(sid, game_id)
+
+    opponent = game.player_o if player.symbol == "X" else game.player_x
+    await sio.emit(
+        "game_rejoined",
+        {
+            "game_id": game_id,
+            "symbol": player.symbol,
+            "board": "".join(game.board),
+            "current_turn": game.current_turn,
+            "opponent": opponent.name if opponent else None,
+        },
+        to=sid,
+    )
