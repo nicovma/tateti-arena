@@ -18,3 +18,7 @@ dist/
 # IDE
 .vscode/
 .idea/
+
+# Documents
+DEFENSE_NOTES.md
+docs/
