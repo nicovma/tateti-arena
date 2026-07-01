@@ -48,6 +48,7 @@ class GameState:
         return None
 
 
-# Estado en memoria compartido por todos los event handlers
+# In-memory state shared across all event handlers
+
 active_games: dict[str, GameState] = {}
 waiting_player: dict | None = None
