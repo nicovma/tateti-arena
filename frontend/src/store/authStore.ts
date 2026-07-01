@@ -36,7 +36,7 @@ const useAuthStore = create<AuthStore>((set) => ({
   login: async (googleToken) => {
     const { data } = await api.post('/auth/google', { token: googleToken })
     localStorage.setItem('jwt', data.jwt)
-    set({ jwt: data.jwt, user: data.user, isAuthenticated: true })
+    set({ jwt: data.jwt, user: { ...data.user, wins: 0, losses: 0, draws: 0, match_history: [] }, isAuthenticated: true })
   },
 
   logout: () => {
