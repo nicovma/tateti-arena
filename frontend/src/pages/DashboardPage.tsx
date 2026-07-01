@@ -20,6 +20,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import useAuthStore from '../store/authStore'
 import useGameStore from '../store/gameStore'
 import StatsCard from '../components/StatsCard'
+import useUiStore from '../store/uiStore'
 
 export default function DashboardPage() {
   const { user, logout, loadProfile } = useAuthStore()
@@ -27,6 +28,11 @@ export default function DashboardPage() {
   const navigate = useNavigate()
 
   useEffect(() => {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get('notify') === 'game_expired') {
+        useUiStore.getState().addToast('Game session expired — please start a new match', 'warning')
+        window.history.replaceState({}, '', '/dashboard')
+      }
     loadProfile()
   }, [])
 

@@ -90,6 +90,20 @@ const useGameStore = create<GameStore>((set, get) => ({
       useUiStore.getState().addToast(`Connection error: ${err.message}`, 'error')
     })
 
+    socket.on('game_not_found', () => {
+      localStorage.removeItem('game_id')
+      get().resetGame()
+      useUiStore.getState().addToast('Game session expired', 'warning')
+      window.location.href = '/dashboard?notify=game_expired'
+    })
+
+    socket.on('connect', () => {
+      const { status, gameId } = get()
+      if (status === 'playing' && gameId) {
+        socket.emit('rejoin_game', { game_id: gameId })
+      }
+    })
+
     socket.connect()
   },
 
