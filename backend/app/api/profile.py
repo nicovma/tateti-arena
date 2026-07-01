@@ -55,7 +55,9 @@ async def get_stats(
         ))
 
     return StatsResponse(
-        username=user.name,
+        id=user.id,
+        email=user.email,
+        name=user.name,
         avatar_url=user.avatar_url,
         wins=user.wins,
         losses=user.losses,

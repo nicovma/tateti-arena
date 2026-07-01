@@ -30,7 +30,9 @@ class MatchHistoryItem(BaseModel):
     date: datetime
 
 class StatsResponse(BaseModel):
-    username: str
+    id: UUID
+    email: str
+    name: str
     avatar_url: str | None
     wins: int
     losses: int
