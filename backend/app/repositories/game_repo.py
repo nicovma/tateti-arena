@@ -42,7 +42,8 @@ class GameRepository:
                 finished_at=datetime.now(timezone.utc),
             )
         )
-        # No commit aquí — el caller commitea todo junto atómicamente
+        # No commit here — caller commits all changes in a single transaction
+        # Atomic
 
     async def get_history(self, user_id: uuid.UUID, limit: int = 20) -> list[Game]:
         result = await self.session.execute(

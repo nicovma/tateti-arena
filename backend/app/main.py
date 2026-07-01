@@ -30,3 +30,5 @@ async def startup():
         await conn.run_sync(Base.metadata.create_all)
 
 app = socketio.ASGIApp(sio, fastapi_app)
+from app.socket import events  # noqa: F401
+
