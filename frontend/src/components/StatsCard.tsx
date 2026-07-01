@@ -8,7 +8,7 @@ interface Props {
 
 export default function StatsCard({ label, value, color = 'text.primary' }: Props) {
   return (
-    <Paper elevation={2} sx={{ p: 3, textAlign: 'center', flex: 1, minWidth: 100 }}>
+    <Paper elevation={2} sx={{ p: 3, textAlign: 'center', flex: 1 }}>
       <Typography variant="h3" sx={{ fontWeight: 'bold', color }}>
         {value}
       </Typography>
