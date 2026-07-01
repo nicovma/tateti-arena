@@ -1,6 +1,8 @@
 import socketio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.models import models  # noqa: F401
+
 
 from app.core.database import engine, Base
 
