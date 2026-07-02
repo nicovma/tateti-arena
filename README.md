@@ -71,6 +71,32 @@ Then run:
 
     pytest
 
+## API Contract — `GET /profile/stats`
+
+Requires `Authorization: Bearer <jwt>`. Response shape:
+
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "email": "player@example.com",
+  "name": "DevCandidate",
+  "avatar_url": "https://lh3.googleusercontent.com/...",
+  "wins": 12,
+  "losses": 5,
+  "draws": 2,
+  "match_history": [
+    {
+      "game_id": "9c858901-8a57-4791-81fe-4c455b099bc9",
+      "opponent": "Jugador2",
+      "result": "WIN",
+      "date": "2023-10-27T10:00:00Z"
+    }
+  ]
+}
+```
+
+Uses `name` instead of `username` — the field mirrors the Google OAuth profile (`email`/`name`/`avatar_url`) already stored on the `User` model, so the API stays consistent with the rest of the auth flow instead of introducing a separate `username` concept. `id`, `email`, `avatar_url` and `match_history[].game_id` are extra fields beyond the minimum contract, kept for frontend convenience (avoids a second round-trip for profile data).
+
 ## Architecture
 
 ```
