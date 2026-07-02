@@ -70,7 +70,7 @@ export default function DashboardPage() {
           Your Stats
         </Typography>
 
-        <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2, mb: 4 }}>
           <StatsCard label="Wins" value={user.wins} color="success.main" />
           <StatsCard label="Losses" value={user.losses} color="error.main" />
           <StatsCard label="Draws" value={user.draws} color="text.secondary" />
